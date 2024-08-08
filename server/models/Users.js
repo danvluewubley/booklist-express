@@ -11,11 +11,11 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   // Establishes one to many relationship
-  // Users.associate = (models) => {
-  //   Users.hasMany(models.Posts, {
-  //     // Deletes every comment if the post is deleted
-  //     onDelete: "cascade",
-  //   });
-  // };
+  Users.associate = (models) => {
+    Users.hasMany(models.Books, {
+      // Deletes every book if the user is deleted
+      onDelete: "cascade",
+    });
+  };
   return Users;
 };

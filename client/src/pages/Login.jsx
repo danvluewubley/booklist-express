@@ -14,6 +14,7 @@ function Login() {
   };
   return (
     <div>
+      <label>Login</label>
       <input
         type="text"
         onChange={(event) => {
@@ -21,6 +22,7 @@ function Login() {
         }}
         placeholder="username"
       />
+      <label>Password</label>
       <input
         type="password"
         onChange={(event) => {
