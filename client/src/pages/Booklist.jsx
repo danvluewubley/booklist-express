@@ -5,27 +5,28 @@ function Booklist() {
   const [listOfBooks, setListOfBooks] = useState([]);
 
   useEffect(() => {
-    try {
-      axios.get("http://localhost:3001/book").then((response) => {
+    axios
+      .get("http://localhost:3001/book")
+      .then((response) => {
+        console.log(response.data);
         setListOfBooks(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching books:", error);
+        alert("An error occurred while fetching books.");
       });
-    } catch {
-      alert('An error occured while fetching the books')
-    }
   }, []);
 
   return (
     <div>
-      {listOfBooks.map((value, key) => {
-        return (
-          <div key={key}>
-            <div className="title"> {value.title} </div>
-            <div className="body">{value.author}</div>
-            <div className="footer">{value.genre}</div>
-            <div className="footer">{value.id}</div>
-          </div>
-        );
-      })}
+      {listOfBooks.map((value, key) => (
+        <div key={key}>
+          <div className="title">{value.title}</div>
+          <div className="body">{value.author}</div>
+          <div className="footer">{value.genre}</div>
+          <div className="footer">Added by: {value.User?.username}</div>
+        </div>
+      ))}
     </div>
   );
 }

@@ -1,15 +1,20 @@
 const express = require("express");
 const router = express.Router();
-const { Books } = require("../models");
+const { Books, Users } = require("../models");
 const { validateToken } = require("../middlewares/AuthMiddleware");
 
 router.get("/", async (req, res) => {
   try {
-    const listOfBooks = await Books.findAll();
+    const listOfBooks = await Books.findAll({
+      include: {
+        model: Users,
+        attributes: ["username"],
+      },
+    });
     res.status(201).json(listOfBooks);
   } catch (err) {
     console.log(err);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: "An error occured while fetching books" });
   }
 });
 

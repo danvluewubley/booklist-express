@@ -3,6 +3,7 @@ module.exports = (sequelize, DataTypes) => {
     username: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
     },
     password: {
       type: DataTypes.STRING,
@@ -10,12 +11,9 @@ module.exports = (sequelize, DataTypes) => {
     },
   });
 
-  // Establishes one to many relationship
   Users.associate = (models) => {
-    Users.hasMany(models.Books, {
-      // Deletes every book if the user is deleted
-      onDelete: "cascade",
-    });
+    Users.hasMany(models.Books);
   };
+
   return Users;
 };
