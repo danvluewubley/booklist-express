@@ -15,9 +15,15 @@ function Registration() {
   });
 
   const handleSubmit = (data) => {
-    axios.post("http://localhost:3001/auth/", data).then(() => {
-      console.log(data);
-    });
+    axios
+      .post("http://localhost:3001/auth/", data)
+      .then(() => {
+        console.log(data);
+      })
+      .catch((error) => {
+        const errorMessage = error.response?.data?.error;
+        alert(errorMessage);
+      });
   };
 
   return (
@@ -30,11 +36,7 @@ function Registration() {
         <Form className="formContainer">
           <label>Username: </label>
           <ErrorMessage name="username" component="span" />
-          <Field
-            autoComplete="off"
-            name="username"
-            placeholder="username"
-          />
+          <Field autoComplete="off" name="username" placeholder="username" />
           <label>Password: </label>
           <ErrorMessage name="password" component="span" />
           <Field

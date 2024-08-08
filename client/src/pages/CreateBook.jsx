@@ -28,31 +28,31 @@ function CreateBook() {
       return;
     }
 
-    try {
-      const decodedToken = jwtDecode(token);
-      const userId = decodedToken.id;
+    const decodedToken = jwtDecode(token);
+    const userId = decodedToken.id;
 
-      const dataWithUserId = {
-        ...data,
-        UserId: userId,
-      };
+    const dataWithUserId = {
+      ...data,
+      UserId: userId,
+    };
 
-      axios
-        .post("http://localhost:3001/book", dataWithUserId, {
-          headers: {
-            accessToken: sessionStorage.getItem("accessToken"),
-          },
-        })
-        .then((response) => {
-          if (response.data.error) {
-            alert(response.data.error);
-          } else {
-            navigate("/");
-          }
-        })
-    } catch (error) {
-      alert("Authentication error. Please log in again.");
-    }
+    axios
+      .post("http://localhost:3001/book", dataWithUserId, {
+        headers: {
+          accessToken: sessionStorage.getItem("accessToken"),
+        },
+      })
+      .then((response) => {
+        if (response.data.error) {
+          alert(response.data.error);
+        } else {
+          navigate("/");
+        }
+      })
+      .catch((error) => {
+        const errorMessage = error?.response?.data?.error;
+        alert(errorMessage);
+      });
   };
 
   return (
@@ -73,20 +73,10 @@ function CreateBook() {
           />
           <label>Author: </label>
           <ErrorMessage name="author" component="span" />
-          <Field
-            autoComplete="off"
-            id="inputCreatePost"
-            name="author"
-            placeholder="author"
-          />
+          <Field autoComplete="off" name="author" placeholder="author" />
           <label>Genre: </label>
           <ErrorMessage name="genre" component="span" />
-          <Field
-            autoComplete="off"
-            id="inputCreatePost"
-            name="genre"
-            placeholder="genre"
-          />
+          <Field autoComplete="off" name="genre" placeholder="genre" />
           <button type="submit">Add book</button>
         </Form>
       </Formik>

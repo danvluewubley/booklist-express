@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { Users } = require("../models");
 const bcrypt = require("bcrypt");
-const {sign} = require("jsonwebtoken")
+const { sign } = require("jsonwebtoken");
 require("dotenv").config();
 
 router.post("/", async (req, res) => {
@@ -19,30 +19,28 @@ router.post("/", async (req, res) => {
       username: username,
       password: hash,
     });
-    res.json("SUCCESS");
+    res.status(201).json({ message: "SUCCESS" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
   }
 });
 
-
 router.post("/login", async (req, res) => {
   const { username, password } = req.body;
 
   try {
     const user = await Users.findOne({ where: { username: username } });
-
-    if (!user) {
-      return res.json({ error: "User Doesn't Exist" });
-    }
-
     const match = await bcrypt.compare(password, user.password);
 
-    if (!match) {
-      return res.json({ error: "Wrong Username And Password Combination" });
+    if (!user || !match) {
+      return res.status(401).json({ error: "Invalid Credentials" });
     }
-    const accessToken = sign({username: user.username, id: user.id}, process.env.SECRET_STRING)
+
+    const accessToken = sign(
+      { username: user.username, id: user.id },
+      process.env.SECRET_STRING
+    );
     res.json(accessToken);
   } catch (error) {
     console.error(error);

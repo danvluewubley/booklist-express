@@ -4,21 +4,24 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const login = () => {
     const data = { username: username, password: password };
-    axios.post("http://localhost:3001/auth/login", data).then((response) => {
-      if (response.data.error){
-        alert(response.data.error)
-      } else {
-        sessionStorage.setItem("accessToken", response.data)
-        navigate("/")
-      }
-    });
+    axios
+      .post("http://localhost:3001/auth/login", data)
+      .then((response) => {
+        sessionStorage.setItem("accessToken", response.data);
+        navigate("/");
+      })
+      .catch((error) => {
+        const errorMessage = error.response?.data?.error;
+        alert(errorMessage);
+      });
   };
+
   return (
     <div>
       <label>Login</label>

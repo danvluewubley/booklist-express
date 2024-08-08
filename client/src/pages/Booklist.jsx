@@ -5,9 +5,13 @@ function Booklist() {
   const [listOfBooks, setListOfBooks] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:3001/book").then((response) => {
-      setListOfBooks(response.data);
-    });
+    try {
+      axios.get("http://localhost:3001/book").then((response) => {
+        setListOfBooks(response.data);
+      });
+    } catch {
+      alert('An error occured while fetching the books')
+    }
   }, []);
 
   return (
