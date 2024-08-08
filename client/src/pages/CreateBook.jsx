@@ -3,6 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 function CreateBook() {
   let navigate = useNavigate();
@@ -20,9 +21,22 @@ function CreateBook() {
   });
 
   const handleSubmit = (data) => {
-    axios.post("http://localhost:3001/book", data).then((response) => {
-      navigate("/");
-    });
+    const token = sessionStorage.getItem("accessToken");
+    const decodedToken = jwtDecode(token);
+    const userId = decodedToken.id;
+
+    const dataWithUserId = {
+      ...data,
+      UserId: userId,
+    };
+
+    console.log(dataWithUserId)
+
+    axios
+      .post("http://localhost:3001/book", dataWithUserId)
+      .then((response) => {
+        navigate("/");
+      });
   };
 
   return (

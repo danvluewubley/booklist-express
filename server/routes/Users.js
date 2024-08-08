@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const { Users } = require("../models");
 const bcrypt = require("bcrypt");
+const {sign} = require("jsonwebtoken")
+require("dotenv").config();
 
 router.post("/", async (req, res) => {
   const { username, password } = req.body;
@@ -40,8 +42,8 @@ router.post("/login", async (req, res) => {
     if (!match) {
       return res.json({ error: "Wrong Username And Password Combination" });
     }
-
-    res.json("YOU LOGGED IN!!!");
+    const accessToken = sign({username: user.username, id: user.id}, process.env.SECRET_STRING)
+    res.json(accessToken);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "An error occurred during login" });
