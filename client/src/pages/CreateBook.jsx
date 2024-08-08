@@ -22,21 +22,37 @@ function CreateBook() {
 
   const handleSubmit = (data) => {
     const token = sessionStorage.getItem("accessToken");
-    const decodedToken = jwtDecode(token);
-    const userId = decodedToken.id;
 
-    const dataWithUserId = {
-      ...data,
-      UserId: userId,
-    };
+    if (!token) {
+      alert("You are not authenticated. Please log in again.");
+      return;
+    }
 
-    console.log(dataWithUserId)
+    try {
+      const decodedToken = jwtDecode(token);
+      const userId = decodedToken.id;
 
-    axios
-      .post("http://localhost:3001/book", dataWithUserId)
-      .then((response) => {
-        navigate("/");
-      });
+      const dataWithUserId = {
+        ...data,
+        UserId: userId,
+      };
+
+      axios
+        .post("http://localhost:3001/book", dataWithUserId, {
+          headers: {
+            accessToken: sessionStorage.getItem("accessToken"),
+          },
+        })
+        .then((response) => {
+          if (response.data.error) {
+            alert(response.data.error);
+          } else {
+            navigate("/");
+          }
+        })
+    } catch (error) {
+      alert("Authentication error. Please log in again.");
+    }
   };
 
   return (
