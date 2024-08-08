@@ -37,7 +37,7 @@ function CreateBook() {
     };
 
     axios
-      .post("http://localhost:3001/book", dataWithUserId, {
+      .post("http://localhost:3001/api/books", dataWithUserId, {
         headers: {
           accessToken: sessionStorage.getItem("accessToken"),
         },

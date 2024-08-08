@@ -2,8 +2,10 @@ import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Registration() {
+  const navigate = useNavigate()
   const initialValues = {
     username: "",
     password: "",
@@ -16,9 +18,9 @@ function Registration() {
 
   const handleSubmit = (data) => {
     axios
-      .post("http://localhost:3001/auth/", data)
+      .post("http://localhost:3001/api/auth/signup", data)
       .then(() => {
-        console.log(data);
+        navigate("/booklist")
       })
       .catch((error) => {
         const errorMessage = error.response?.data?.error;

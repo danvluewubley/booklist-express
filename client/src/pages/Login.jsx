@@ -11,7 +11,7 @@ function Login() {
   const login = () => {
     const data = { username: username, password: password };
     axios
-      .post("http://localhost:3001/auth/login", data)
+      .post("http://localhost:3001/api/auth/login", data)
       .then((response) => {
         sessionStorage.setItem("accessToken", response.data);
         navigate("/");

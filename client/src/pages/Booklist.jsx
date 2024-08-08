@@ -6,7 +6,7 @@ function Booklist() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/book")
+      .get("http://localhost:3001/api/books")
       .then((response) => {
         console.log(response.data);
         setListOfBooks(response.data);
