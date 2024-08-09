@@ -12,7 +12,7 @@ const db = require("./models");
 app.use("/api", apiRouter); 
 
 db.sequelize.sync().then(() => {
-  app.listen(3001, () => {
+  app.listen(process.env.PORT, () => {
     console.log("Server Starting...");
   });
 });
