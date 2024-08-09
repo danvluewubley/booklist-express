@@ -10,9 +10,20 @@ const config = require("../config/config")[env]; // Access the correct environme
 const db = {};
 
 let sequelize;
+
+// Use DATABASE_URL from .env for PostgreSQL
 if (config.use_env_variable) {
-  sequelize = new Sequelize(process.env[config.use_env_variable], config);
+  sequelize = new Sequelize(process.env[config.use_env_variable], {
+    dialect: "postgres",
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false, // Set to false for development; be careful in production
+      },
+    },
+  });
 } else {
+  // You can modify this block as needed for other configurations
   sequelize = new Sequelize(config.database, config.username, config.password, {
     host: config.host,
     dialect: config.dialect,
