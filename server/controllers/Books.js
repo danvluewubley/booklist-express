@@ -1,26 +1,26 @@
-const { Books, Users } = require("../models");
+const { Books } = require("../models");
 const { getBooksWithUsers } = require("../services/BookTable");
+const CustomError = require("../utils/CustomError");
 
-const GetAllBooks = async (req, res) => {
+const GetAllBooks = async (req, res, next) => {
   try {
     const books = await getBooksWithUsers();
     return res.status(200).json(books);
   } catch (error) {
-    return res.status(500).json({ error: "Internal server error" });
+    next(error);
   }
 };
 
 
-const AddToBookList = async (req, res) => {
+const AddToBookList = async (req, res, next) => {
   try {
     const book = req.body;
-    if (!book) return res.json({ error: "All fields must be filled out" });
+    if (!book) throw new CustomError("All fields must be filled out", 422, "Fields");
 
     await Books.create(book);
     res.status(201).json(book);
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ error: "Internal Server Error" });
+  } catch (error) {
+    next(error)
   }
 }
 

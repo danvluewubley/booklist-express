@@ -2,15 +2,16 @@ const { Users } = require("../models");
 const bcrypt = require("bcrypt");
 const { sign } = require("jsonwebtoken");
 const { QueryUsedByUsername } = require("../services/UserTable");
+const CustomError = require("../utils/CustomError");
 require("dotenv").config();
 
-const SignUp = async (req, res) => {
+const SignUp = async (req, res, next) => {
   const { username, password } = req.body;
 
   try {
     const userExists = await QueryUsedByUsername(username);
     if (userExists) {
-      return res.status(400).json({ error: "Username already exists" });
+      throw new CustomError("Username already exists", 400, 'Login');
     }
 
     const hash = await bcrypt.hash(password, 10);
@@ -20,12 +21,11 @@ const SignUp = async (req, res) => {
     });
     res.status(201).json({ message: "SUCCESS" });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal server error" });
+    next(error)
   }
 };
 
-const Login = async (req, res) => {
+const Login = async (req, res, next) => {
   const { username, password } = req.body;
 
   try {
@@ -33,7 +33,7 @@ const Login = async (req, res) => {
     const match = await bcrypt.compare(password, user.password);
 
     if (!user || !match) {
-      return res.status(401).json({ error: "Invalid Credentials" });
+      throw new CustomError("Invalid Credentials", 404, "Credentials");
     }
 
     const accessToken = sign(
@@ -42,8 +42,7 @@ const Login = async (req, res) => {
     );
     res.json(accessToken);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "An error occurred during login" });
+    next(error);
   }
 };
 
