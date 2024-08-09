@@ -1,12 +1,10 @@
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
+import useCreateBook from "../hooks/useCreateBook"; // Import the custom hook
 
 function CreateBook() {
-  let navigate = useNavigate();
+  const handleCreateBook = useCreateBook(); // Use the custom hook
 
   const initialValues = {
     title: "",
@@ -15,51 +13,16 @@ function CreateBook() {
   };
 
   const validationSchema = Yup.object().shape({
-    title: Yup.string().required(""),
-    author: Yup.string().required(""),
-    genre: Yup.string().required(""),
+    title: Yup.string().required("Title is required"),
+    author: Yup.string().required("Author is required"),
+    genre: Yup.string().required("Genre is required"),
   });
-
-  const handleSubmit = (data) => {
-    const token = sessionStorage.getItem("accessToken");
-
-    if (!token) {
-      alert("You are not authenticated. Please log in again.");
-      return;
-    }
-
-    const decodedToken = jwtDecode(token);
-    const userId = decodedToken.id;
-
-    const dataWithUserId = {
-      ...data,
-      UserId: userId,
-    };
-
-    axios
-      .post("http://localhost:3001/api/books", dataWithUserId, {
-        headers: {
-          accessToken: sessionStorage.getItem("accessToken"),
-        },
-      })
-      .then((response) => {
-        if (response.data.error) {
-          alert(response.data.error);
-        } else {
-          navigate("/");
-        }
-      })
-      .catch((error) => {
-        const errorMessage = error?.response?.data?.error;
-        alert(errorMessage);
-      });
-  };
 
   return (
     <div>
       <Formik
         initialValues={initialValues}
-        onSubmit={handleSubmit}
+        onSubmit={handleCreateBook}
         validationSchema={validationSchema}
       >
         <Form>
@@ -69,14 +32,14 @@ function CreateBook() {
             autoComplete="off"
             id="inputCreatePost"
             name="title"
-            placeholder="title"
+            placeholder="Title"
           />
           <label>Author: </label>
           <ErrorMessage name="author" component="span" />
-          <Field autoComplete="off" name="author" placeholder="author" />
+          <Field autoComplete="off" name="author" placeholder="Author" />
           <label>Genre: </label>
           <ErrorMessage name="genre" component="span" />
-          <Field autoComplete="off" name="genre" placeholder="genre" />
+          <Field autoComplete="off" name="genre" placeholder="Genre" />
           <button type="submit">Add book</button>
         </Form>
       </Formik>

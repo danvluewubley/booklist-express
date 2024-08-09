@@ -1,44 +1,25 @@
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { useState } from "react";
-
-interface Data {
-  [key: string]: any;
-}
+import { login } from "../services/api";
 
 function useLoginFetch() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const postData = async (data: Data) => {
+  const postData = async (data: { username: string; password: string }) => {
     setLoading(true);
     setError(null);
 
     try {
-      if (sessionStorage.getItem("accessToken"))
-        return setError("User is already logged in");
-
-      const response = await axios.post(
-        "http://localhost:3001/api/auth/login",
-        data
-      );
-
-      sessionStorage.setItem("accessToken", response.data);
-      navigate("/booklist");
-
-      return response.data;
-
-    } catch (error: any) {
-
-      const errorMessage = error.response?.data?.error || "An error occurred";
-      setError(errorMessage);
-      return null;
-
+      const token = await login(data);
+      sessionStorage.setItem("accessToken", token);
+      navigate("/book");
+    } catch (error) {
+      setError(error as string);
+      console.log("Login error: ", error)
     } finally {
-
       setLoading(false);
-      
     }
   };
 
