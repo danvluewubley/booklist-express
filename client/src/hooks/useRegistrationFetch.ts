@@ -1,7 +1,10 @@
+import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Data } from "../interfaces/auth";
-import { register } from "../services/api";
+
+interface Data {
+  [key: string]: any;
+}
 
 function useRegistrationFetch() {
   const [loading, setLoading] = useState(false);
@@ -12,15 +15,15 @@ function useRegistrationFetch() {
     setLoading(true);
     setError(null);
 
-    if (sessionStorage.getItem("accessToken")) {
-      setLoading(false);
+    if (sessionStorage.getItem("accessToken"))
       return setError("User cannot sign up if they are already logged in");
-    }
 
     try {
-      const response = await register(data);
-
-      navigate("/login");
+      const response = await axios.post(
+        "http://localhost:3001/api/auth/signup",
+        data
+      );
+      navigate("/booklist");
       return response.data;
     } catch (error: any) {
       const errorMessage = error.response?.data?.error || "An error occurred";

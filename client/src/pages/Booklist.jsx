@@ -1,8 +1,21 @@
-import React from "react";
-import useBookList from "../hooks/useBookList";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 function Booklist() {
-  const listOfBooks = useBookList();
+  const [listOfBooks, setListOfBooks] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3001/api/books")
+      .then((response) => {
+        console.log(response.data);
+        setListOfBooks(response.data);
+      })
+      .catch((error) => {
+        const errorMessage = error?.response?.data?.error;
+        alert(errorMessage);
+      });
+  }, []);
 
   return (
     <div>

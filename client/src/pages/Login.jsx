@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
+import { useState } from "react";
 import useLoginFetch from "../hooks/useLoginFetch";
 
 function Login() {
@@ -6,46 +7,45 @@ function Login() {
   const [password, setPassword] = useState("");
   const { postData, loading, error } = useLoginFetch();
 
-  const handleLogin = async (event) => {
-    event.preventDefault();
-    await postData({ username, password });
+  const login = async () => {
+    try {
+      const result = await postData({
+        username: username,
+        password: password,
+      });
+
+      if (result) {
+        console.log("Login successful:", result);
+      }
+      
+    } catch (err) {
+      console.error("Login failed:", err);
+    }
   };
 
   return (
     <div>
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-        <div>
-          <label>Username</label>
-          <input
-            type="text"
-            onChange={(event) => setUsername(event.target.value)}
-            placeholder="username"
-            value={username}
-            required
-          />
-        </div>
-        <div>
-          <label>Password</label>
-          <input
-            type="password"
-            onChange={(event) => setPassword(event.target.value)}
-            placeholder="password"
-            value={password}
-            required
-          />
-        </div>
-        <button type="submit" disabled={loading}>
-          {loading ? "Logging in..." : "Login"}
-        </button>
-      </form>
-      {error && (
-        <p className="text-red-500">
-          {typeof error === "string"
-            ? error
-            : error?.error || "An error occurred."}
-        </p>
-      )}{" "}
+      <label>Login</label>
+      <input
+        type="text"
+        onChange={(event) => {
+          setUsername(event.target.value);
+        }}
+        placeholder="username"
+      />
+      <label>Password</label>
+      <input
+        type="password"
+        onChange={(event) => {
+          setPassword(event.target.value);
+        }}
+        placeholder="password"
+      />
+
+      <button onClick={login} disabled={loading}>
+        {loading ? "Logging in" : "Login"}
+      </button>
+      <p className="text-red-500">{error}</p>
     </div>
   );
 }
