@@ -12,8 +12,8 @@ function Booklist() {
         setListOfBooks(response.data);
       })
       .catch((error) => {
-        console.error("Error fetching books:", error);
-        alert("An error occurred while fetching books.");
+        const errorMessage = error?.response?.data?.error;
+        alert(errorMessage);
       });
   }, []);
 

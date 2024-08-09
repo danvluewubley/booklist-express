@@ -1,25 +1,26 @@
 import React from "react";
 import { useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import useLoginFetch from "../hooks/useLoginFetch";
 
 function Login() {
-  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const { postData, loading, error } = useLoginFetch();
 
-  const login = () => {
-    const data = { username: username, password: password };
-    axios
-      .post("http://localhost:3001/api/auth/login", data)
-      .then((response) => {
-        sessionStorage.setItem("accessToken", response.data);
-        navigate("/");
-      })
-      .catch((error) => {
-        const errorMessage = error.response?.data?.error;
-        alert(errorMessage);
+  const login = async () => {
+    try {
+      const result = await postData({
+        username: username,
+        password: password,
       });
+
+      if (result) {
+        console.log("Login successful:", result);
+      }
+      
+    } catch (err) {
+      console.error("Login failed:", err);
+    }
   };
 
   return (
@@ -41,7 +42,10 @@ function Login() {
         placeholder="password"
       />
 
-      <button onClick={login}>Login</button>
+      <button onClick={login} disabled={loading}>
+        {loading ? "Logging in" : "Login"}
+      </button>
+      <p className="text-red-500">{error}</p>
     </div>
   );
 }

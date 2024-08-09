@@ -1,11 +1,9 @@
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import useRegistrationFetch from "../hooks/useRegistrationFetch";
 
 function Registration() {
-  const navigate = useNavigate()
   const initialValues = {
     username: "",
     password: "",
@@ -16,16 +14,20 @@ function Registration() {
     password: Yup.string().min(4).max(20).required(),
   });
 
-  const handleSubmit = (data) => {
-    axios
-      .post("http://localhost:3001/api/auth/signup", data)
-      .then(() => {
-        navigate("/booklist")
-      })
-      .catch((error) => {
-        const errorMessage = error.response?.data?.error;
-        alert(errorMessage);
+  const { postData, loading, error } = useRegistrationFetch();
+
+  const handleSubmit = async (data) => {
+    try {
+      const result = await postData({
+        username: data.username,
+        password: data.password,
       });
+      if (result) {
+        console.log("Signup successful:", result);
+      }
+    } catch (err) {
+      console.error("Signup failed:", err);
+    }
   };
 
   return (
@@ -47,9 +49,12 @@ function Registration() {
             placeholder="password"
             type="password"
           />
-          <button type="submit">Register</button>
+          <button type="submit" disabled={loading}>
+            {loading ? "Registering" : "Register"}
+          </button>
         </Form>
       </Formik>
+      {error && <p className="text-red-500">Error: {error}</p>}
     </div>
   );
 }
