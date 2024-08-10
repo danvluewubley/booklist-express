@@ -2,16 +2,20 @@ const { verify } = require("jsonwebtoken");
 const CustomError = require("../utils/CustomError");
 
 const validateToken = (req, res, next) => {
-  const accessToken = req.header("accessToken");
+  const accessToken = req.cookies.accessToken;
 
-  if (!accessToken)
+  if (!accessToken) {
     return res.status(401).json({ error: "User not logged in" });
+  }
 
   try {
-    const validToken = verify(accessToken, process.env.SECRET_STRING);
-    if (validToken) return next();
+    const validToken = verify(accessToken, process.env.SECRET_ACCESS_TOKEN);
+    if (validToken) {
+      req.userId = validToken.id;
+      return next();
+    }
   } catch (error) {
-    next(new CustomError("Invalid Token", 401, "Token"));
+    return next(new CustomError("Invalid Token", 401, "Token"));
   }
 };
 

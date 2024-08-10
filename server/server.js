@@ -2,13 +2,19 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 const { apiRouter } = require("./routes/index");
 const errorHandler = require("./middlewares/ErrorMiddleware");
 const CustomError = require("./utils/CustomError");
 
 app.use(express.json());
+app.use(cookieParser());
 
-app.use(cors());
+const corsOptions = {
+  origin: "http://localhost:5173",
+  credentials: true,
+};
+app.use(cors(corsOptions));
 
 const db = require("./models");
 

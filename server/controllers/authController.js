@@ -11,7 +11,7 @@ const SignUp = async (req, res, next) => {
   try {
     const userExists = await QueryUsedByUsername(username);
     if (userExists) {
-      throw new CustomError("Username already exists", 400, 'Login');
+      throw new CustomError("Username already exists", 400, "Login");
     }
 
     const hash = await bcrypt.hash(password, 10);
@@ -21,7 +21,7 @@ const SignUp = async (req, res, next) => {
     });
     res.status(201).json({ message: "SUCCESS" });
   } catch (error) {
-    next(error)
+    next(error);
   }
 };
 
@@ -38,9 +38,28 @@ const Login = async (req, res, next) => {
 
     const accessToken = sign(
       { username: user.username, id: user.id },
-      process.env.SECRET_STRING
+      process.env.SECRET_ACCESS_TOKEN,
+      {
+        expiresIn: "15m",
+      }
     );
-    res.json(accessToken);
+
+    const refreshToken = sign(
+      { username: user.username, id: user.id },
+      process.env.SECRET_REFRESH_TOKEN,
+      {
+        expiresIn: "90d",
+      }
+    );
+
+    res.cookie("accessToken", accessToken, {
+      httpOnly: true,
+      secure: true,
+      maxAge: 15 * 60 * 1000,
+      sameSite: "Strict",
+    });
+
+    res.json('Token sent through cookie!');
   } catch (error) {
     next(error);
   }

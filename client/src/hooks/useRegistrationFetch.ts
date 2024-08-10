@@ -12,13 +12,12 @@ function useRegistrationFetch() {
     setLoading(true);
     setError(null);
 
-    if (sessionStorage.getItem("accessToken"))
-      return setError("User cannot sign up if they are already logged in");
-
     try {
       const response = await axios.post(
         "http://localhost:3001/api/auth/signup",
-        data
+        data, {
+          withCredentials: true,
+        }
       );
       navigate("/booklist");
       return response.data;

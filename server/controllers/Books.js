@@ -14,12 +14,23 @@ const GetAllBooks = async (req, res, next) => {
 const AddToBookList = async (req, res, next) => {
   try {
     const book = req.body;
-    if (book.title == "" || book.author == "" || book.genre == "")
-      throw new CustomError("All fields must be filled out", 422, "Fields");
 
-    await Books.create(book);
-    res.status(201).json(book);
+    if (!book.title || !book.author || !book.genre) {
+      return res.status(422).json({ error: "All fields must be filled out" });
+    }
+
+    const userId = req.userId;
+
+    const bookWithUserId = {
+      ...book,
+      UserId: userId,
+    };
+
+    const createdBook = await Books.create(bookWithUserId);
+
+    res.status(201).json(createdBook);
   } catch (error) {
+    console.error(error);
     next(error);
   }
 };
