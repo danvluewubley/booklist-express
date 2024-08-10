@@ -1,5 +1,5 @@
 const { verify } = require("jsonwebtoken");
-const CustomError = require("../utils/CustomError");
+const ValidationError = require("../utils/CustomError");
 
 const validateToken = (req, res, next) => {
   const accessToken = req.cookies.accessToken;
@@ -15,7 +15,7 @@ const validateToken = (req, res, next) => {
       return next();
     }
   } catch (error) {
-    return next(new CustomError("Invalid Token", 401, "Token"));
+    return next(new ValidationError("Invalid Token", 401, "Token"));
   }
 };
 
