@@ -11,17 +11,18 @@ const GetAllBooks = async (req, res, next) => {
   }
 };
 
-
 const AddToBookList = async (req, res, next) => {
   try {
     const book = req.body;
-    if (!book) throw new CustomError("All fields must be filled out", 422, "Fields");
+    const validate = validateBookData(req.body)
+
+    if (!validate) throw new CustomError("All fields must be filled out", 422, "Fields");      
 
     await Books.create(book);
     res.status(201).json(book);
   } catch (error) {
-    next(error)
+    next(error);
   }
-}
+};
 
 module.exports = { GetAllBooks, AddToBookList };
