@@ -13,29 +13,23 @@ function useLoginFetch() {
     setError(null);
 
     try {
-      if (sessionStorage.getItem("accessToken"))
-        return setError("User is already logged in");
-
       const response = await axios.post(
         "http://localhost:3001/api/auth/login",
-        data
+        data,
+        {
+          withCredentials: true,
+        }
       );
-
-      sessionStorage.setItem("accessToken", response.data);
+      console.log("Cookie was received and validated:", response.data);
       navigate("/booklist");
 
       return response.data;
-
     } catch (error: any) {
-
       const errorMessage = error.response?.data?.error || "An error occurred";
       setError(errorMessage);
       return null;
-
     } finally {
-
       setLoading(false);
-      
     }
   };
 

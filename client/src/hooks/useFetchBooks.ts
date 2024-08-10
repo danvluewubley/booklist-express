@@ -15,9 +15,13 @@ const useFetchBooks = (): UseFetchBooksResult => {
 
   useEffect(() => {
     const fetchBooks = async () => {
+      setLoading(true);
       try {
         const response = await axios.get<BookData[]>(
-          "http://localhost:3001/api/books"
+          "http://localhost:3001/api/books",
+          {
+            withCredentials: true,
+          }
         );
         setListOfBooks(response.data);
       } catch (error) {
