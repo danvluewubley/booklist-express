@@ -1,10 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-interface Data {
-  [key: string]: any;
-}
+import { Data } from "../interfaces/Data";
 
 function useRegistrationFetch() {
   const [loading, setLoading] = useState(false);

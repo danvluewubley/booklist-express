@@ -1,59 +1,9 @@
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
+import useCreateBooks from "../hooks/useCreateBooks";
 
 function CreateBook() {
-  let navigate = useNavigate();
-
-  const initialValues = {
-    title: "",
-    author: "",
-    genre: "",
-  };
-
-  const validationSchema = Yup.object().shape({
-    title: Yup.string().required(""),
-    author: Yup.string().required(""),
-    genre: Yup.string().required(""),
-  });
-
-  const handleSubmit = (data) => {
-    const token = sessionStorage.getItem("accessToken");
-
-    if (!token) {
-      alert("You are not authenticated. Please log in again.");
-      return;
-    }
-
-    const decodedToken = jwtDecode(token);
-    const userId = decodedToken.id;
-
-    const dataWithUserId = {
-      ...data,
-      UserId: userId,
-    };
-
-    axios
-      .post("http://localhost:3001/api/books", dataWithUserId, {
-        headers: {
-          accessToken: sessionStorage.getItem("accessToken"),
-        },
-      })
-      .then((response) => {
-        if (response.data.error) {
-          alert(response.data.error);
-        } else {
-          navigate("/");
-        }
-      })
-      .catch((error) => {
-        const errorMessage = error?.response?.data?.error;
-        alert(errorMessage);
-      });
-  };
+  const { initialValues, validationSchema, handleSubmit } = useCreateBooks();
 
   return (
     <div>

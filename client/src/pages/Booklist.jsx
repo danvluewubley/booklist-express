@@ -1,21 +1,11 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import useFetchBooks from "../hooks/useFetchBooks";
 
 function Booklist() {
-  const [listOfBooks, setListOfBooks] = useState([]);
+  const { listOfBooks, loading, error } = useFetchBooks();
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:3001/api/books")
-      .then((response) => {
-        console.log(response.data);
-        setListOfBooks(response.data);
-      })
-      .catch((error) => {
-        const errorMessage = error?.response?.data?.error;
-        alert(errorMessage);
-      });
-  }, []);
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
     <div>

@@ -14,9 +14,8 @@ const GetAllBooks = async (req, res, next) => {
 const AddToBookList = async (req, res, next) => {
   try {
     const book = req.body;
-    const validate = validateBookData(req.body)
-
-    if (!validate) throw new CustomError("All fields must be filled out", 422, "Fields");      
+    if (book.title == "" || book.author == "" || book.genre == "")
+      throw new CustomError("All fields must be filled out", 422, "Fields");
 
     await Books.create(book);
     res.status(201).json(book);

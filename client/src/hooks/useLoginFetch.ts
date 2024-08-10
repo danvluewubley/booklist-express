@@ -1,10 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
-
-interface Data {
-  [key: string]: any;
-}
+import { Data } from "../interfaces/Data";
 
 function useLoginFetch() {
   const [loading, setLoading] = useState(false);
