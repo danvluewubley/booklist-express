@@ -1,6 +1,7 @@
 const { Books, Users } = require("../models");
+const DatabaseError = require('../utils/CustomError')
 
-const getBooksWithUsers = async () => {
+const getBooksWithUsers = async (next) => {
   try {
     const listOfBooks = await Books.findAll({
       include: {
@@ -10,8 +11,7 @@ const getBooksWithUsers = async () => {
     });
     return listOfBooks;
   } catch (error) {
-    console.error("Error fetching books:", error);
-    throw error;
+    throw next(new DatabaseError("Error fetching books", 500));
   }
 };
 

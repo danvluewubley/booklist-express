@@ -1,6 +1,6 @@
 const { Books } = require("../models");
 const { getBooksWithUsers } = require("../services/BookTable");
-const CustomError = require("../utils/CustomError");
+const ValidationError = require("../utils/CustomError");
 
 const GetAllBooks = async (req, res, next) => {
   try {
@@ -16,7 +16,7 @@ const AddToBookList = async (req, res, next) => {
     const book = req.body;
 
     if (!book.title || !book.author || !book.genre) {
-      return res.status(422).json({ error: "All fields must be filled out" });
+      throw next(new ValidationError("All fields must be filled out", 400));
     }
 
     const userId = req.userId;
