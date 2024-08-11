@@ -1,30 +1,26 @@
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
-import { Data } from "../interfaces/Data";
+import { useNavigate } from "react-router-dom";
 
-function useLoginFetch() {
+function useRegistrationFetch() {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  const postData = async (data: Data) => {
+  const postData = async (data) => {
     setLoading(true);
     setError(null);
 
     try {
       const response = await axios.post(
-        "http://localhost:3001/api/auth/login",
-        data,
-        {
+        "http://localhost:3001/api/auth/signup",
+        data, {
           withCredentials: true,
         }
       );
-      console.log("Cookie was received and validated:", response.data);
-      navigate("/book");
-
+      navigate("/booklist");
       return response.data;
-    } catch (error: any) {
+    } catch (error) {
       const errorMessage = error.response?.data?.error || "An error occurred";
       setError(errorMessage);
       return null;
@@ -36,4 +32,4 @@ function useLoginFetch() {
   return { postData, loading, error };
 }
 
-export default useLoginFetch;
+export default useRegistrationFetch;

@@ -1,8 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import { FormikHelpers } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
-import { BookData } from "../interfaces/BookData";
+import { useState } from "react";
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required("Title is required"),
@@ -11,20 +10,22 @@ const validationSchema = Yup.object().shape({
 });
 
 const useCreateBooks = () => {
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const initialValues: BookData = {
+  const initialValues = {
     title: "",
     author: "",
     genre: "",
   };
 
   const handleSubmit = async (
-    data: BookData,
-    { setSubmitting }: FormikHelpers<BookData>
+    data,
+    { setSubmitting }
   ) => {
-
     try {
+      setLoading(true)
+
       const response = await axios.post(
         "http://localhost:3001/api/books",
         data,
@@ -43,10 +44,11 @@ const useCreateBooks = () => {
       alert(errorMessage);
     } finally {
       setSubmitting(false);
+      setLoading(false)
     }
   };
 
-  return { initialValues, validationSchema, handleSubmit };
+  return { initialValues, validationSchema, handleSubmit, loading };
 };
 
 export default useCreateBooks;

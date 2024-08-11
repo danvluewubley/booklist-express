@@ -1,23 +1,16 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { BookData } from "../interfaces/BookData";
 
-interface UseFetchBooksResult {
-  listOfBooks: BookData[];
-  loading: boolean;
-  error: string | null;
-}
-
-const useFetchBooks = (): UseFetchBooksResult => {
-  const [listOfBooks, setListOfBooks] = useState<BookData[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+const useFetchBooks = () => {
+  const [listOfBooks, setListOfBooks] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchBooks = async () => {
       setLoading(true);
       try {
-        const response = await axios.get<BookData[]>(
+        const response = await axios.get(
           "http://localhost:3001/api/books",
           {
             withCredentials: true,

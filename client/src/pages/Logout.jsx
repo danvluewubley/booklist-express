@@ -1,8 +1,7 @@
 import useLogout from "../hooks/useLogout";
 
 function Logout() {
-  useLogout();
-
+  useLogout();  
   return null;
 }
 
