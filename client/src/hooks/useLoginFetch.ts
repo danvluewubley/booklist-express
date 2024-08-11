@@ -21,7 +21,7 @@ function useLoginFetch() {
         }
       );
       console.log("Cookie was received and validated:", response.data);
-      navigate("/booklist");
+      navigate("/book");
 
       return response.data;
     } catch (error: any) {

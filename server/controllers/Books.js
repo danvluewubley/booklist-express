@@ -35,4 +35,13 @@ const AddToBookList = async (req, res, next) => {
   }
 };
 
-module.exports = { GetAllBooks, AddToBookList };
+const RemoveAllBooks = async (req, res, next) => {
+  try {
+    await Books.destroy({where:{}})
+    console.log('Destroyed!')
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+module.exports = { GetAllBooks, AddToBookList, RemoveAllBooks };

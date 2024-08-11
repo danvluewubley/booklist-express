@@ -36,7 +36,7 @@ const useCreateBooks = () => {
       if (response.data.error) {
         alert(response.data.error);
       } else {
-        navigate("/");
+        navigate("/booklist");
       }
     } catch (error) {
       const errorMessage = error?.response?.data?.error || "An error occurred";
