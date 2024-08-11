@@ -5,17 +5,14 @@ import Login from "./pages/Login";
 import CreateBook from "./pages/CreateBook";
 import Booklist from "./pages/Booklist";
 import Logout from "./pages/Logout";
+import Navbar from "./components/Navbar";
+import './index.css'
 
 function App() {
   return (
-    <div className="w-screen h-screen">
+    <div className="grid grid-rows-[auto_1fr] w-screen h-screen">
       <Router>
-        <Link to="/">Home Page</Link>
-        <Link to="/login">Login</Link>
-        <Link to="/registration">Registration</Link>
-        <Link to="/book">Add book</Link>
-        <Link to="/booklist">Booklist</Link>
-        <Link to="/logout">Logout</Link>
+        <Navbar />
         <Routes>
           <Route path="/" element={<Home />}></Route>
           <Route path="/login" element={<Login />}></Route>

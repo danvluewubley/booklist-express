@@ -31,7 +31,7 @@ function RegistrationForm() {
   };
 
   return (
-    <div className="createPostPage">
+    <>
       <Formik
         initialValues={initialValues}
         onSubmit={handleSubmit}
@@ -55,7 +55,7 @@ function RegistrationForm() {
         </Form>
       </Formik>
       {error && <p className="text-red-500">Error: {error}</p>}
-    </div>
+    </>
   );
 }
 

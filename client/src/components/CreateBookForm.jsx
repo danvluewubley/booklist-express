@@ -5,7 +5,7 @@ import useCreateBooks from "../hooks/useCreateBooks";
 function CreateBookForm() {
   const { initialValues, validationSchema, handleSubmit, loading } = useCreateBooks();
   return (
-    <div>
+    <>
       <Formik
         initialValues={initialValues}
         onSubmit={handleSubmit}
@@ -29,7 +29,7 @@ function CreateBookForm() {
           <button type="submit">{loading ? "Adding Book" : "Add Book"}</button>
         </Form>
       </Formik>
-    </div>
+    </>
   );
 }
 

@@ -23,8 +23,9 @@ function LoginForm() {
   };
 
   return (
-    <div>
-      <label>Login</label>
+    <div className="flex flex-col">
+      <h2>Login</h2>
+      <label>Username</label>
       <input
         type="text"
         onChange={(event) => {
@@ -40,8 +41,7 @@ function LoginForm() {
         }}
         placeholder="password"
       />
-
-      <button onClick={login} disabled={loading}>
+      <button onClick={login} disabled={loading} className="w-min">
         {loading ? "Logging in" : "Login"}
       </button>
       <p className="text-red-500">{error}</p>

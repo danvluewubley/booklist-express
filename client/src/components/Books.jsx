@@ -8,7 +8,7 @@ function Books() {
   if (error) return <div>{error}</div>;
 
   return (
-    <div>
+    <>
       {listOfBooks.map((value, key) => (
         <div key={key}>
           <div className="title">{value.title}</div>
@@ -17,7 +17,7 @@ function Books() {
           <div className="footer">Added by: {value.User?.username}</div>
         </div>
       ))}
-    </div>
+    </>
   );
 }
 
