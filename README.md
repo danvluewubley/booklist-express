@@ -41,8 +41,8 @@ cd booklist-app/server
 npm install
 ```
 4. Set up the database:
-  * Ensure PostgreSQL is installed and running.
-  * Create a database and configure the connection in config/config.json.
+   * Ensure PostgreSQL is installed and running.
+   * Create a database and configure the connection in config/config.json.
 5. Run database migrations:
 ```
 npx sequelize-cli db:migrate
