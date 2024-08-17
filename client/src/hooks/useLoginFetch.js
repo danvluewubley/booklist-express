@@ -1,11 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
+import { useAuth } from "../contexts/AuthContext";
 
 function useLoginFetch() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const postData = async (data) => {
     setLoading(true);
@@ -20,6 +22,7 @@ function useLoginFetch() {
         }
       );
       console.log("Cookie was received and validated:", response.data);
+      login();
       navigate("/book");
 
       return response.data;

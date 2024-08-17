@@ -1,29 +1,31 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useAuth } from "../contexts/AuthContext";
 
 const useLogout = () => {
   const navigate = useNavigate();
+  const { logout: contextLogout } = useAuth();
 
   useEffect(() => {
-    async function logout() {
+    const performLogout = async () => {
       try {
-        const response = await axios.post(
+        await axios.post(
           "http://localhost:3001/api/auth/logout",
           {},
           {
             withCredentials: true,
           }
         );
+        contextLogout();
         navigate("/login");
       } catch (error) {
         console.error("Error logging out:", error);
       }
-    }
+    };
 
-    logout();
-  }, [navigate]);
+    performLogout();
+  }, [navigate, contextLogout]);
 };
-
 
 export default useLogout;
