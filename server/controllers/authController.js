@@ -1,4 +1,4 @@
-const { Users } = require("../models");
+const { Users, Tokens } = require("../models");
 const bcrypt = require("bcrypt");
 const { sign } = require("jsonwebtoken");
 const { QueryUsedByUsername } = require("../services/UserTable");
@@ -59,10 +59,44 @@ const Login = async (req, res, next) => {
       sameSite: "Strict",
     });
 
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: true,
+      maxAge: 90 * 24 * 60 * 60 * 1000,
+      sameSite: "Strict",
+    });
+
     res.json("Token sent through cookie!");
   } catch (error) {
     next(error);
   }
 };
 
-module.exports = { SignUp, Login };
+const Logout = async (req, res, next) => {
+  const refreshToken = req.cookies.refreshToken;
+  if (!refreshToken) {
+    return res.status(401).json({ error: "User not logged in" });
+  }
+
+  res.clearCookie("accessToken", {
+    httpOnly: true,
+    secure: true,
+    path: "/",
+  });
+
+  res.clearCookie("refreshToken", {
+    httpOnly: true,
+    secure: true,
+    path: "/",
+  });
+
+  await Tokens.create({
+    token: refreshToken,
+    type: "refresh",
+  });
+
+
+  res.json("Token cleared!");
+};
+
+module.exports = { SignUp, Login, Logout };

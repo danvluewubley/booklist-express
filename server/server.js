@@ -6,9 +6,11 @@ const cookieParser = require("cookie-parser");
 const { apiRouter } = require("./routes/index");
 const errorHandler = require("./middlewares/ErrorMiddleware");
 const NotFoundError = require("./utils/CustomError");
+const morgan = require("morgan");
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(morgan("dev"));
 
 const corsOptions = {
   origin: "http://localhost:5173",
