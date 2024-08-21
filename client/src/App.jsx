@@ -6,6 +6,7 @@ import CreateBook from "./pages/CreateBook";
 import Booklist from "./pages/Booklist";
 import Logout from "./pages/Logout";
 import Navbar from "./components/Navbar";
+import PersonalBooklist from "./pages/PersonalBooklist";
 import './index.css'
 
 function App() {
@@ -20,6 +21,10 @@ function App() {
           <Route path="/book" element={<CreateBook />}></Route>
           <Route path="/booklist" element={<Booklist />}></Route>
           <Route path="/logout" element={<Logout />}></Route>
+          <Route
+            path="/booklist/personal"
+            element={<PersonalBooklist />}
+          ></Route>
         </Routes>
       </Router>
     </div>

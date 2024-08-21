@@ -44,4 +44,13 @@ const RemoveAllBooks = async (req, res, next) => {
   }
 }
 
-module.exports = { GetAllBooks, AddToBookList, RemoveAllBooks };
+const GetBooksByUser = async (req, res, next) => {
+  try {
+    const books = await Books.findAll({ where: { UserId: req.userId } });
+    return res.status(200).json(books);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+module.exports = { GetAllBooks, AddToBookList, RemoveAllBooks, GetBooksByUser };
