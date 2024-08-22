@@ -38,3 +38,14 @@ export const fetchBook = async (id) => {
   });
   return response.data;
 };
+
+export const editBook = async (id, data) => {
+  const response = await axios.put(
+    `http://localhost:3001/api/books/edit/${id}`,
+    data,
+    {
+      withCredentials: true,
+    }
+  );
+  return response.data;
+};
