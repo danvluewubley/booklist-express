@@ -99,4 +99,17 @@ const Logout = async (req, res, next) => {
   res.json("Token cleared!");
 };
 
-module.exports = { SignUp, Login, Logout };
+const UserInfo = async (req, res, next) => {
+  try {
+    const { username } = req.body;
+    const user = await QueryUsedByUsername(username);
+    if (!user) {
+      throw new Error("User not found");
+    }
+    return res.status(200).json(user.id);
+  } catch (error) {
+    next(error);
+  }
+}
+
+module.exports = { SignUp, Login, Logout, UserInfo };

@@ -1,8 +1,7 @@
 import React from "react";
 import RegistrationForm from "../components/registration/RegistrationForm";
 
-function Registration() {
-  
+function Registration() {  
   return (
     <>
      <RegistrationForm />

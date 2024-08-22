@@ -10,9 +10,7 @@ function Books() {
     error,
   } = useFetchPersonalBooks();
 
-  const {
-    handleSubmit,
-  } = useDeleteBooks();
+  const { handleSubmit } = useDeleteBooks();
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>{error}</div>;
