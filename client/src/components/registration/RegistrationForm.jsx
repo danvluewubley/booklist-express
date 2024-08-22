@@ -27,12 +27,12 @@ function RegistrationForm() {
       }}
       validationSchema={validationSchema}
     >
-      <Form className="flex w-screen h-screen justify-center mt-[200px]">
+      <Form className="flex justify-center items-center">
         <div className="flex justify-center items-center w-[700px] h-[450px] bg-gray-300 rounded-lg shadow-2xl">
           <div className="flex flex-col w-[600px] h-[400px] bg-gray-100 rounded-2xl">
             <RegistrationHead />
             <div className="flex flex-col justify-center h-full">
-              <div className="mb-4">
+              <div>
                 <Field
                   name="username"
                   as={RegistrationInput}
@@ -40,13 +40,8 @@ function RegistrationForm() {
                   placeholder="username"
                   iconSrc="user.png"
                 />
-                <ErrorMessage
-                  name="username"
-                  component="div"
-                  className="text-red-500"
-                />
               </div>
-              <div className="mb-4">
+              <div>
                 <Field
                   name="password"
                   as={RegistrationInput}
@@ -54,11 +49,6 @@ function RegistrationForm() {
                   placeholder="password"
                   iconSrc="key.png"
                   type="password"
-                />
-                <ErrorMessage
-                  name="password"
-                  component="div"
-                  className="text-red-500"
                 />
               </div>
               <RegistrationButton loading={loading} />

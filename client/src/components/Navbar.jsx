@@ -38,7 +38,7 @@ function Navbar() {
         {isLoggedIn && (
           <li>
             <Link
-              to="/booklist/personal"
+              to="/personal"
               className={`relative font-custom text-2xl transition-all duration-300`}
             >
               Personal Booklist

@@ -12,7 +12,7 @@ function CreateBookForm() {
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
-        <Form className="flex w-screen h-screen justify-center mt-[200px]">
+        <Form className="flex justify-center items-center">
           <div className="flex justify-center items-center w-[700px] h-[500px] bg-gray-300 rounded-lg shadow-2xl">
             <div className="flex flex-col w-[600px] h-[450px] bg-gray-100 rounded-2xl">
               <div className="flex justify-center bg-gray-200 rounded-t-2xl h-24 items-center">
