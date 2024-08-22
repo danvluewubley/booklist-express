@@ -3,9 +3,6 @@ import { useAuth } from "../contexts/AuthContext";
 import { useMutation } from "@tanstack/react-query";
 import { loginUser } from "../services/authServices";
 
-import * as jwtDecode from "jwt-decode";
-import Cookies from "js-cookie";
-
 function useLoginFetch() {
   const navigate = useNavigate();
   const { login } = useAuth();
@@ -15,8 +12,8 @@ function useLoginFetch() {
     onError: (error) => {
       console.error("Error logging in:", error);
     },
-    onSuccess: () => {
-      login();
+    onSuccess: (response) => {
+      login(response.id);
       navigate("/book");
     },
   });

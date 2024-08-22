@@ -66,7 +66,7 @@ const Login = async (req, res, next) => {
       sameSite: "Strict",
     });
 
-    res.json("Token sent through cookie!");
+    res.json({ id: user.id });
   } catch (error) {
     next(error);
   }
