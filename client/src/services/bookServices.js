@@ -31,3 +31,10 @@ export const fetchPersonalBooks = async () => {
   });
   return response.data;
 };
+
+export const fetchBook = async (id) => {
+  const response = await axios.get(`http://localhost:3001/api/books/${id}`, {
+    withCredentials: true,
+  });
+  return response.data;
+};

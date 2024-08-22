@@ -7,6 +7,7 @@ import Booklist from "./pages/Booklist";
 import Logout from "./pages/Logout";
 import Navbar from "./components/Navbar";
 import PersonalBooklist from "./pages/PersonalBooklist";
+import Book from "./pages/Book";
 import "./index.css";
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
           <Route path="/booklist" element={<Booklist />}></Route>
           <Route path="/logout" element={<Logout />}></Route>
           <Route path="/personal" element={<PersonalBooklist />}></Route>
+          <Route path="/book/:id" element={<Book />}></Route>
         </Routes>
       </Router>
     </div>
