@@ -87,4 +87,23 @@ const GetBookById = async (req, res, next) => {
   }
 };
 
-module.exports = { GetAllBooks, AddToBookList, RemoveAllBooks, GetBooksByUser, RemoveBookById, GetBookById };
+const EditBookById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const book = await Books.findOne({ where: { id } });
+
+    if (!book) {
+      return res.status(404).json({ error: "Book not found" });
+    }
+
+    await Books.update(req.body, { where: { id } });
+    return res.status(200).json({ message: "Book updated successfully" });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ error: "An error occurred while trying to update the book" });
+  }
+};
+
+module.exports = { GetAllBooks, AddToBookList, RemoveAllBooks, GetBooksByUser, RemoveBookById, GetBookById, EditBookById };
