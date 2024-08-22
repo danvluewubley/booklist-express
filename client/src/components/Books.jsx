@@ -2,22 +2,22 @@ import React from "react";
 import useFetchBooks from "../hooks/useFetchBooks";
 
 function Books() {
-  const { listOfBooks, loading, error } = useFetchBooks();
+  const { data: listOfBooks, isLoading, isError, error } = useFetchBooks();
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error: {error.message}</div>;
 
   return (
-    <>
+    <div>
       {listOfBooks.map((value, key) => (
         <div key={key}>
-          <div className="title">{value.title}</div>
-          <div className="body">{value.author}</div>
-          <div className="footer">{value.genre}</div>
-          <div className="footer">Added by: {value.User?.username}</div>
+          <div>{value.title}</div>
+          <div>{value.author}</div>
+          <div>{value.genre}</div>
+          <div>Added by: {value.User?.username}</div>
         </div>
       ))}
-    </>
+    </div>
   );
 }
 

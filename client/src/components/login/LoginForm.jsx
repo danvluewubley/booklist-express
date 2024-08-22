@@ -7,21 +7,10 @@ import LoginButton from "./LoginButton";
 function LoginForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { postData, loading, error } = useLoginFetch();
+  const { handleSubmit, loading } = useLoginFetch();
 
-  const login = async () => {
-    try {
-      const result = await postData({
-        username: username,
-        password: password,
-      });
-
-      if (result) {
-        console.log("Login successful:", result);
-      }
-    } catch (err) {
-      console.error("Login failed:", err);
-    }
+  const onSubmit = () => {
+    handleSubmit({ username, password });
   };
 
   return (
@@ -43,7 +32,7 @@ function LoginForm() {
               iconSrc="key.png"
               type="password"
             />
-            <LoginButton onClick={login} loading={loading} />
+            <LoginButton onClick={onSubmit} loading={loading} />
           </div>
         </div>
       </div>

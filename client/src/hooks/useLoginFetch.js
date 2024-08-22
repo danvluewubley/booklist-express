@@ -1,41 +1,28 @@
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
+import { useMutation } from "@tanstack/react-query";
+import { loginUser } from "../services/authServices";
 
 function useLoginFetch() {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
   const navigate = useNavigate();
   const { login } = useAuth();
 
-  const postData = async (data) => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const response = await axios.post(
-        "http://localhost:3001/api/auth/login",
-        data,
-        {
-          withCredentials: true,
-        }
-      );
-      console.log("Cookie was received and validated:", response.data);
+  const mutation = useMutation({
+    mutationFn: loginUser,
+    onError: (error) => {
+      console.error("Error logging in:", error);
+    },
+    onSuccess: () => {
       login();
       navigate("/book");
+    },
+  });
 
-      return response.data;
-    } catch (error) {
-      const errorMessage = error.response?.data?.error || "An error occurred";
-      setError(errorMessage);
-      return null;
-    } finally {
-      setLoading(false);
-    }
+  const handleSubmit = (data) => {
+    mutation.mutate(data);
   };
 
-  return { postData, loading, error };
+  return { handleSubmit, loading: mutation.isLoading };
 }
 
 export default useLoginFetch;

@@ -1,43 +1,35 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import useFetchPersonalBooks from "../hooks/useFetchPersonalBooks";
-import axios from "axios";
+import useDeleteBooks from "../hooks/useDeleteBook";
 
 function Books() {
-  const { listOfBooks: initialBooks, loading, error } = useFetchPersonalBooks();
-  const [listOfBooks, setListOfBooks] = useState(initialBooks);
+  const {
+    data: listOfBooks,
+    isLoading,
+    isError,
+    error,
+  } = useFetchPersonalBooks();
 
-  useEffect(() => {
-    setListOfBooks(initialBooks);
-  }, [initialBooks]);
+  const {
+    handleSubmit,
+  } = useDeleteBooks();
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
-
-  async function deleteBook(id) {
-    try {
-      await axios.delete(`http://localhost:3001/api/books/delete/${id}`, {
-        withCredentials: true,
-      });
-
-      setListOfBooks(listOfBooks.filter((book) => book.id !== id));
-    } catch (error) {
-      console.error("Error deleting book:", error);
-    }
-  }
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>{error}</div>;
 
   return (
-    <>
-      {listOfBooks.map((value, key) => (
-        <div key={key}>
+    <div>
+      {listOfBooks.map((value) => (
+        <div key={value.id}>
           <div className="title">{value.title}</div>
           <div className="body">{value.author}</div>
           <div className="footer">{value.genre}</div>
-          <button className="footer" onClick={() => deleteBook(value.id)}>
+          <button className="footer" onClick={() => handleSubmit(value.id)}>
             Delete
           </button>
         </div>
       ))}
-    </>
+    </div>
   );
 }
 
