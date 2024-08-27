@@ -11,13 +11,19 @@ function Books() {
   if (isError) return <div>Error: {error.message}</div>;
 
   return (
-    <div>
+    <div className="grid grid-cols-5 gap-4">
       {listOfBooks.map((value, key) => (
-        <div key={key} onClick={() => navigate(`/book/${value.id}`)}>
-          <div>{value.title}</div>
-          <div>{value.author}</div>
-          <div>{value.genre}</div>
-          <div>Added by: {value.User?.username}</div>
+        <div
+          key={key}
+          onClick={() => navigate(`/book/${value.id}`)}
+          className="flex mx-auto bg-gray-200 h-[200px] w-[80%] justify-center items-center"
+        >
+          <div className="flex flex-col w-[80%] h-[80%] justify-around">
+            <p>Title: {value.title}</p>
+            <p>Author: {value.author}</p>
+            <p>Genre: {value.genre}</p>
+            <p>Added by: {value.User?.username}</p>
+          </div>
         </div>
       ))}
     </div>
